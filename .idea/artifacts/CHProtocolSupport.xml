@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" build-on-make="true" name="CHProtocolSupport">
+    <output-path>D:/Server/CH/1.9/plugins/CommandHelper/extensions</output-path>
+    <root id="archive" name="CHProtocolSupport.jar">
+      <element id="module-output" name="CHProtocolSupport" />
+    </root>
+  </artifact>
+</component>
