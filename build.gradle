@@ -19,16 +19,13 @@ dependencies {
     compile fileTree(dir: 'libs', include: '*.jar')
 }
 
-task downloadCH(type: Download) {
-    src 'builds.enginehub.org/job/commandhelper/last-successful/download/commandhelper-3.3.4-SNAPSHOT-full.jar'
-    dest 'libs/CommandHelper.jar'
+task downloadLibs(type: Download) {
+    src([
+            'http://builds.enginehub.org/job/commandhelper/last-successful/download/commandhelper-3.3.4-SNAPSHOT-full.jar',
+            'https://build.true-games.org/job/ProtocolSupport/lastSuccessfulBuild/artifact/target/ProtocolSupport.jar'
+    ])
+    dest 'libs/'
     overwrite false
 }
 
-task downloadPS(type: Download) {
-    src 'https://build.true-games.org/job/ProtocolSupport/lastSuccessfulBuild/artifact/target/ProtocolSupport.jar'
-    dest 'libs/ProtocolSupport.jar'
-    overwrite false
-}
-
-compileJava.dependsOn(downloadPS, downloadCH)
+compileJava.dependsOn(downloadLibs)
