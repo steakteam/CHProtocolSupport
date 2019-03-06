@@ -1,0 +1,34 @@
+plugins {
+    id 'java'
+    id 'de.undercouch.download' version '3.4.3'
+}
+
+group 'tk.itstake'
+version '1.0-SNAPSHOT'
+
+sourceCompatibility = 1.8
+compileJava.options.encoding = 'UTF-8'
+
+repositories {
+    mavenCentral()
+    maven { url = 'https://hub.spigotmc.org/nexus/content/groups/public/' }
+}
+
+dependencies {
+    compile 'org.spigotmc:spigot-api:1.13.2-R0.1-SNAPSHOT'
+    compile fileTree(dir: 'libs', include: '*.jar')
+}
+
+task downloadCH(type: Download) {
+    src 'builds.enginehub.org/job/commandhelper/last-successful/download/commandhelper-3.3.4-SNAPSHOT-full.jar'
+    dest 'libs/CommandHelper.jar'
+    overwrite false
+}
+
+task downloadPS(type: Download) {
+    src 'https://build.true-games.org/job/ProtocolSupport/lastSuccessfulBuild/artifact/target/ProtocolSupport.jar'
+    dest 'libs/ProtocolSupport.jar'
+    overwrite false
+}
+
+compileJava.dependsOn(downloadPS, downloadCH)
