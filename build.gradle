@@ -20,12 +20,13 @@ dependencies {
 }
 
 task downloadLibs(type: Download) {
+    mkdir 'libs'
     src([
             'http://builds.enginehub.org/job/commandhelper/last-successful/download/commandhelper-3.3.4-SNAPSHOT-full.jar',
             'https://build.true-games.org/job/ProtocolSupport/lastSuccessfulBuild/artifact/target/ProtocolSupport.jar'
     ])
-    dest 'libs/'
-    overwrite false
+    dest 'libs'
+    onlyIfModified true
 }
 
-compileJava.dependsOn(downloadLibs)
+compileJava.dependsOn downloadLibs
