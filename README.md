@@ -5,35 +5,41 @@ ProtocolSupport plugin API for CommandHelper
 
 ## get_protocol_version
 
-Arg: [player|protocolname]
+Arg: [player]
 
 Returns a protocol version string.
 
 Exmaples
 
-For user: `get_protocol_version('EntryPoint')` 
-
-For protocol name: `get_protocol_version('MINECRAFT_1_14_3')`
+`get_protocol_version('EntryPoint')` 
 
 ## get_protocol_data
 
-Arg: [player|protocolname]
+Arg: [protocolname]
 
-Returns a protocol data array. There is keys id, order, name, type
+Returns a protocol data array. There is keys id, order, type, name, internalname
 
 Examples
 
-For user: `get_protocol_data('EntryPoint')` 
+`get_protocol_data('MINECRAFT_1_14_3')`
 
-For protocol name: `get_protocol_data('MINECRAFT_1_14_3')`
+## pget_protocol_data
+
+Arg: [player]
+
+Returns a protocol data array. There is keys id, order, type, name, internalname 
+
+Examples
+
+`pget_protocol_data('EntryPoint')` 
 
 Version limit example
 
 ```javascript
 @order17 = get_protocol_data('MINECRAFT_1_7_10')[order]
 bind(player_join, null, null, @e, @order17) {
-    @playerOrder = get_protocol_data(@e[player])[order]
-    if (@playerOrder <= @order17) {
+    @playerOrder = pget_protocol_data(@e[player])[order]
+    if (@order17 >= @playerOrder) {
         pkick(@e[player], 'Outdated client!')
     }
 }

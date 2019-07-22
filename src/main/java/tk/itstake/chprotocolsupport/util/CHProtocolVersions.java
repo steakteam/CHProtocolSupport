@@ -33,19 +33,21 @@ public class CHProtocolVersions {
         return builder.toString();
     }
 
+    public static Integer computeOrder(ProtocolVersion version, Target t) {
+        return orderCaches.computeIfAbsent(version, v -> getOrder(v, t));
+    }
+
     public static Integer getOrder(ProtocolVersion version, Target t) {
-        return orderCaches.computeIfAbsent(version, v -> {
-            try {
-                Field orderIdField = ProtocolVersion.class.getDeclaredField("orderId");
-                orderIdField.setAccessible(true);
-                Object orderId = orderIdField.get(version);
-                Field idField = orderId.getClass().getDeclaredField("id");
-                idField.setAccessible(true);
-                return idField.getInt(orderId);
-            } catch (Exception ex) {
-                throw new CREException("Failed while getting orderId. ProtocolSupport changed?", t, ex);
-            }
-        });
+        try {
+            Field orderIdField = ProtocolVersion.class.getDeclaredField("orderId");
+            orderIdField.setAccessible(true);
+            Object orderId = orderIdField.get(version);
+            Field idField = orderId.getClass().getDeclaredField("id");
+            idField.setAccessible(true);
+            return idField.getInt(orderId);
+        } catch (Exception ex) {
+            throw new CREException("Failed while getting orderId. ProtocolSupport changed?", t, ex);
+        }
     }
 
     public static ProtocolVersion getProtocolVersion(Mixed argument, Target t) {
@@ -53,7 +55,7 @@ public class CHProtocolVersions {
         try {
             return ProtocolVersion.valueOf(query);
         } catch (IllegalArgumentException ex) {
-            throw new CREIllegalArgumentException("Offline player or unknown protocol name.\n" +
+            throw new CREIllegalArgumentException("Unknown protocol name.\n" +
                     "Available protocol names: " + PROTOCOL_LIST_STR, t, ex);
         }
     }
@@ -72,9 +74,9 @@ public class CHProtocolVersions {
     public static CArray parseToCArray(ProtocolVersion version, Target t) {
         CArray array = CArray.GetAssociativeArray(t);
         array.set("id", new CInt(version.getId(), t), t);
-        array.set("order", new CInt(getOrder(version, t), t), t);
-        array.set("name", version.getName(), t);
+        array.set("order", new CInt(computeOrder(version, t), t), t);
         array.set("type", version.getProtocolType().name(), t);
+        array.set("name", version.getName(), t);
         array.set("internalname", version.name(), t);
         return array;
     }
