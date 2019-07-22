@@ -106,8 +106,6 @@ public class Functions {
         public Class<? extends CREThrowable>[] thrown() {
             return new Class[]{
                     CREInvalidPluginException.class,
-                    CREPlayerOfflineException.class,
-                    CRENotFoundException.class,
                     CREIllegalArgumentException.class
             };
         }
