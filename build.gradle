@@ -12,17 +12,18 @@ compileJava.options.encoding = 'UTF-8'
 repositories {
     mavenCentral()
     maven { url = 'https://hub.spigotmc.org/nexus/content/groups/public/' }
+    maven { url 'http://maven.sk89q.com/repo' }
 }
 
 dependencies {
-    compile 'org.spigotmc:spigot-api:1.13.2-R0.1-SNAPSHOT'
+    compile 'org.spigotmc:spigot-api:1.14.4-R0.1-SNAPSHOT'
+    compile'com.sk89q:commandhelper:3.3.4-SNAPSHOT'
     compile fileTree(dir: 'libs', include: '*.jar')
 }
 
 task downloadLibs(type: Download) {
     mkdir 'libs'
     src([
-            'http://builds.enginehub.org/job/commandhelper/last-successful/download/commandhelper-3.3.4-SNAPSHOT-full.jar',
             'https://build.true-games.org/job/ProtocolSupport/lastSuccessfulBuild/artifact/target/ProtocolSupport.jar'
     ])
     dest 'libs'

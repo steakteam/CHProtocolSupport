@@ -4,7 +4,9 @@ import com.laytonsmith.PureUtilities.SimpleVersion;
 import com.laytonsmith.PureUtilities.Version;
 import com.laytonsmith.abstraction.MCPlayer;
 import com.laytonsmith.annotations.api;
+import com.laytonsmith.core.MSVersion;
 import com.laytonsmith.core.Static;
+import com.laytonsmith.core.constructs.CNull;
 import com.laytonsmith.core.constructs.CString;
 import com.laytonsmith.core.constructs.Target;
 import com.laytonsmith.core.environments.Environment;
@@ -18,6 +20,7 @@ import com.laytonsmith.core.functions.AbstractFunction;
 import com.laytonsmith.core.natives.interfaces.Mixed;
 import org.bukkit.Bukkit;
 import protocolsupport.api.ProtocolVersion;
+import protocolsupport.protocol.utils.i18n.I18NData;
 import tk.itstake.chprotocolsupport.util.CHProtocolVersions;
 
 
@@ -197,6 +200,53 @@ public class Functions {
         @Override
         public Version since() {
             return new SimpleVersion(1, 0, 0);
+        }
+    }
+
+    @api
+    public static class get_i18n_data extends ProtocolSupportDependsFunction {
+
+        @Override
+        protected Mixed doExec(Target t, Environment env, Mixed... args) throws ConfigRuntimeException {
+            String message = I18NData.getI18N(args[0].val()).getTranslationString(args[1].val());
+            return message != null
+                    ? new CString(message, t)
+                    : CNull.NULL;
+        }
+
+        @Override
+        public Class<? extends CREThrowable>[] thrown() {
+            return new Class[]{};
+        }
+
+        @Override
+        public boolean isRestricted() {
+            return false;
+        }
+
+        @Override
+        public Boolean runAsync() {
+            return null;
+        }
+
+        @Override
+        public Version since() {
+            return MSVersion.V3_3_4;
+        }
+
+        @Override
+        public String getName() {
+            return "get_i18n_data";
+        }
+
+        @Override
+        public Integer[] numArgs() {
+            return new Integer[]{2};
+        }
+
+        @Override
+        public String docs() {
+            return "string {locale, key} Returns an i18n message.";
         }
     }
 
